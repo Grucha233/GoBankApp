@@ -15,7 +15,7 @@ func HandleRequests() {
 }
 
 //
-// prints on AdasPage Welcome
+// handling "/adas" endpoint function
 func AdasFunc(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "Welcome to Adaś!!!")
@@ -23,7 +23,7 @@ func AdasFunc(w http.ResponseWriter, r *http.Request) {
 }
 
 //
-// homepage
+// Homepage handling function
 func HomePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome to the HomePage!")
 	fmt.Println("Endpoint Hit: homePage")

@@ -7,6 +7,6 @@ import (
 )
 
 func main() {
-	bank.ConDatabase()
+	bank.ConDB()
 	bank.HandleRequests()
 }
