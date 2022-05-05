@@ -34,26 +34,3 @@ func ConDB() {
 
 	fmt.Println("Successfully connected!")
 }
-
-type User struct {
-	id         int
-	full_name  string
-	balance    float64
-	currency   string
-	created_at string
-}
-
-type Entries struct {
-	id         int
-	account_id int
-	ammount    float64
-	created_at string
-}
-
-type Transfers struct {
-	id              int
-	from_accuont_id int
-	to_account_id   int
-	ammount         float64
-	created_at      string
-}

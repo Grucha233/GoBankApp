@@ -10,20 +10,29 @@ import (
 // Main api function, handles all endpoints
 func HandleRequests() {
 	http.HandleFunc("/", HomePage)
-	http.HandleFunc("/adas", AdasFunc)
+	http.HandleFunc("/register", Register)
+	http.HandleFunc("/login", Login)
 	log.Fatal(http.ListenAndServe(":10000", nil))
 }
 
 //
-// handling "/adas" endpoint function
-func AdasFunc(w http.ResponseWriter, r *http.Request) {
+// Allows to register, "/register"
+func Register(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Fprintf(w, "Welcome to Adaś!!!")
+	fmt.Fprintf(w, "Register page")
+	fmt.Println("Endpoint Hit: Register")
 
 }
 
 //
-// Homepage handling function
+// Allows users to log in to the bank, "/login"
+func Login(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Login page")
+	fmt.Println("Endpoint Hit: Login")
+}
+
+//
+// Homepage handling function, "/"
 func HomePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome to the HomePage!")
 	fmt.Println("Endpoint Hit: homePage")
