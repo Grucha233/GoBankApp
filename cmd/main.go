@@ -7,6 +7,5 @@ import (
 )
 
 func main() {
-	bank.ConDB()
 	bank.HandleRequests()
 }
