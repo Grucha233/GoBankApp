@@ -7,5 +7,6 @@ import (
 )
 
 func main() {
+	bank.AutoMigrate()
 	bank.HandleRequests()
 }

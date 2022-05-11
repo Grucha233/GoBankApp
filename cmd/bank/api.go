@@ -18,31 +18,35 @@ func HandleRequests() {
 //
 // Allows to register, "/register"
 func Register(w http.ResponseWriter, r *http.Request) {
-	ConDB()
 	switch r.Method {
 	case "GET":
 		fmt.Fprintf(w, "Login page - GET")
+		db, err := ConGorm()
+		if err != nil {
+			fmt.Println("Problem with gorm connect")
+		}
+		result := map[string]interface{}{}
+		db.Model(&Users{}).First(&result)
+		fmt.Println(result)
 
 	case "POST":
 		fmt.Fprintf(w, "Login page - POST")
-
-		//connect to database
-		db, err := ConDB()
-
-		//insert of the row
-		sqlStatement := `
-		INSERT INTO users (name, balance, currency, Password )
-		VALUES ('pan1', 65, 'zloty','123')`
-
-		_, err = db.Exec(sqlStatement)
+		db, err := ConGorm()
 		if err != nil {
-			panic(err)
-		} else {
-			fmt.Println("\nRow inserted successfully!")
+			fmt.Println("Problem with gorm connect")
 		}
+		userStr := `{
+			"Name":"Adas2",
+			"Currency": "USD",
+			"Password": "12345"
+		 }`
+		nu, err := NewUserFromJson(userStr)
+		if err != nil {
+			fmt.Println("Problem with UserString")
+		}
+		db.Create(&nu)
 
 	}
-
 }
 
 //
@@ -58,3 +62,10 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome to the HomePage!")
 	fmt.Println("Endpoint Hit: homePage")
 }
+
+// usrStr := `{
+// 	"Name":"adas",
+// 	"Balance": "170",
+// 	"Currency": "zloty",
+// 	"Password": "123"
+//  }`

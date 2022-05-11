@@ -2,58 +2,72 @@ package bank
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-//
-//information needet to connect to database
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "admin"
-	dbname   = "bank_database"
-)
-
-//Creates pointer to the database (connects to the database)
-func ConDB() (sql.DB, error) {
-	connStr := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		panic(err)
-	}
-	defer db.Close()
-
+//Creates pointer to the database gorm (connects to the database)
+func ConGorm() (gorm.DB, error) {
+	dsn := "host=localhost user=postgres password=admin dbname=bank_database2 port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	return *db, err
+}
+
+//Migrates models to the database (should be userd when program starts)
+func AutoMigrate() {
+	db, err := ConGorm()
+	if err != nil {
+		fmt.Println("Connection problem")
+	}
+	var user Users
+	var entrie Entries
+	var transfer Transfers
+	db.AutoMigrate(&user, &entrie, &transfer)
 }
 
 type Users struct {
 	gorm.Model
-	ID         int64
-	Name       string
-	Balance    sql.NullFloat64
-	Currency   string
-	Created_at string
-	Password   string
+	ID       int64 `gorm:"primaryKey"`
+	Name     string
+	Balance  sql.NullFloat64
+	Currency string
+	Password string
+}
+
+//Constructor of new user
+func newUser(name string, currency string, password string) Users {
+	nu := Users{
+		Name:     name,
+		Currency: currency,
+		Password: password,
+	}
+	return nu
 }
 
 type Transfers struct {
 	gorm.Model
-	ID              int64
+	ID              int64 `gorm:"primaryKey"`
 	From_account_id int64
 	To_account_id   int64
 	Ammount         float64
-	Created_at      string
 }
 
 type Entries struct {
 	gorm.Model
-	ID         int64
+	ID         int64 `gorm:"primaryKey"`
 	Account_id int64
 	Ammount    float64
-	Created_at string
+}
+
+func NewUserFromJson(jsonStr string) (Users, error) {
+	var newUser Users
+	err := json.Unmarshal([]byte(jsonStr), &newUser)
+	if err != nil {
+		err = fmt.Errorf("unable to unmarshal JSON", err.Error())
+		return Users{}, err
+	}
+	return newUser, nil
 }
