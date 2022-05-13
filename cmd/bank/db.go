@@ -38,7 +38,7 @@ type Users struct {
 }
 
 //Constructor of new user
-func newUser(name string, currency string, password string) Users {
+func NewUser(name string, currency string, password string) Users {
 	nu := Users{
 		Name:     name,
 		Currency: currency,

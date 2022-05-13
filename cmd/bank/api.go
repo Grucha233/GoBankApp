@@ -21,31 +21,14 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		fmt.Fprintf(w, "Login page - GET")
-		db, err := ConGorm()
-		if err != nil {
-			fmt.Println("Problem with gorm connect")
-		}
-		result := map[string]interface{}{}
-		db.Model(&Users{}).First(&result)
-		fmt.Println(result)
 
 	case "POST":
 		fmt.Fprintf(w, "Login page - POST")
-		db, err := ConGorm()
-		if err != nil {
-			fmt.Println("Problem with gorm connect")
-		}
-		userStr := `{
-			"Name":"Adas2",
-			"Currency": "USD",
-			"Password": "12345"
-		 }`
-		nu, err := NewUserFromJson(userStr)
-		if err != nil {
-			fmt.Println("Problem with UserString")
-		}
-		db.Create(&nu)
+		UserRegister(r)
 
+	default:
+		w.WriteHeader(http.StatusNotImplemented)
+		w.Write([]byte(http.StatusText(http.StatusNotImplemented)))
 	}
 }
 
