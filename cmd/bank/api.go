@@ -35,8 +35,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 //
 // Allows users to log in to the bank, "/login"
 func Login(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Login page")
-	fmt.Println("Endpoint Hit: Login")
+	UserLogin(r)
 }
 
 //

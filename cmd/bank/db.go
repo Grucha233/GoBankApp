@@ -1,7 +1,6 @@
 package bank
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 
@@ -32,7 +31,7 @@ type Users struct {
 	gorm.Model
 	ID       int64 `gorm:"primaryKey"`
 	Name     string
-	Balance  sql.NullFloat64
+	Balance  float64
 	Currency string
 	Password string
 }
@@ -42,6 +41,7 @@ func NewUser(name string, currency string, password string) Users {
 	nu := Users{
 		Name:     name,
 		Currency: currency,
+		Balance:  0,
 		Password: password,
 	}
 	return nu
